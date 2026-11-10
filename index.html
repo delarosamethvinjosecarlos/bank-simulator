@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador - Transferencias Internacionales</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f5f7;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-top: 5px solid #004481;
+        }
+
+        h2 {
+            color: #004481;
+            margin-top: 0;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            background-color: #1464A5;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #004481;
+        }
+
+        .alert {
+            padding: 1rem;
+            margin-top: 1.5rem;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .alert.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        .alert.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        .balance {
+            font-size: 0.9rem;
+            color: #5f6368;
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>🌐 Transferencia Internacional</h2>
+        <form id="transferForm">
+            <div class="form-group">
+                <label for="origen">Cuenta de Origen</label>
+                <select id="origen" name="origen">
+                    <option value="1500">ES91 2100 **** 1234 (Saldo: 1.500,00 €)</option>
+                    <option value="50">ES91 2100 **** 5678 (Saldo: 50,00 €)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="iban">IBAN Destino (Internacional)</label>
+                <input type="text" id="iban" placeholder="Ej: FR76 3000..." required data-cy="iban-input">
+            </div>
+            <div class="form-group">
+                <label for="amount">Importe (€)</label>
+                <input type="number" id="amount" min="1" step="0.01" required data-cy="amount-input">
+            </div>
+            <button type="submit" data-cy="submit-btn">Ejecutar Transferencia</button>
+        </form>
+        <div id="message" class="alert"></div>
+    </div>
+
+    <script>
+        document.getElementById('transferForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const origenBalance = parseFloat(document.getElementById('origen').value);
+            const iban = document.getElementById('iban').value.trim().toUpperCase();
+            const amount = parseFloat(document.getElementById('amount').value);
+            const messageEl = document.getElementById('message');
+
+            messageEl.className = 'alert'; // reset classes
+
+            // Simulamos reglas de negocio (Criterios de Aceptación)
+            if (!iban.startsWith('FR') && !iban.startsWith('DE') && !iban.startsWith('IT')) {
+                messageEl.textContent = '❌ Error: El IBAN debe pertenecer a un país autorizado (FR, DE, IT).';
+                messageEl.classList.add('error');
+                return;
+            }
+
+            if (amount > origenBalance) {
+                messageEl.textContent = '❌ Error: Fondos insuficientes en la cuenta de origen.';
+                messageEl.classList.add('error');
+                return;
+            }
+
+            if (amount > 10000) {
+                messageEl.textContent = '⚠️ Bloqueo de Seguridad: La transferencia supera el límite antiblanqueo.';
+                messageEl.classList.add('error');
+                return;
+            }
+
+            messageEl.textContent = '✅ Transferencia internacional procesada con éxito.';
+            messageEl.classList.add('success');
+        });
+    </script>
+</body>
+
+</html>
