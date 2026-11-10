@@ -1,0 +1,167 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 4,
+    "passes": 4,
+    "pending": 0,
+    "failures": 0,
+    "start": "2026-11-10T18:04:59.112Z",
+    "end": "2026-11-10T18:05:10.005Z",
+    "duration": 10893,
+    "testsRegistered": 4,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "35ad4d44-73a7-4b42-bb09-a40c3facfac0",
+      "title": "",
+      "fullFile": "cypress\\e2e\\transferencias.cy.js",
+      "file": "cypress\\e2e\\transferencias.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "46ac630e-86e7-44f8-9b19-02437eb026dd",
+          "title": "Flujo de Transferencias BBVA (React + FastAPI)",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "TC-01: Debería completar una transferencia internacional válida",
+              "fullTitle": "Flujo de Transferencias BBVA (React + FastAPI) TC-01: Debería completar una transferencia internacional válida",
+              "timedOut": null,
+              "duration": 5175,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// Nos aseguramos de estar en el Dashboard y que cargue el saldo\ncy.get('[data-cy=\"balance\"]').should('be.visible');\n// Escribimos IBAN válido de Francia\ncy.get('[data-cy=\"transfer-iban\"]').clear().type('FR76 3000 1234 5678');\n// Importe seguro\ncy.get('[data-cy=\"transfer-amount\"]').clear().type('15.50');\ncy.get('[data-cy=\"transfer-btn\"]').click();\n// Validación del mensaje de éxito (Tailwind React UI)\ncy.contains('Transferencia procesada con éxito').should('be.visible');",
+              "err": {},
+              "uuid": "5461f72f-b0a1-4c16-97c6-9d7d33f11a73",
+              "parentUUID": "46ac630e-86e7-44f8-9b19-02437eb026dd",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "TC-02: Debería fallar si los fondos son insuficientes",
+              "fullTitle": "Flujo de Transferencias BBVA (React + FastAPI) TC-02: Debería fallar si los fondos son insuficientes",
+              "timedOut": null,
+              "duration": 1848,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get('[data-cy=\"balance\"]').should('be.visible');\ncy.get('[data-cy=\"transfer-iban\"]').clear().type('DE89 3704 0044 0532');\n// Intentamos enviar una burrada de dinero que supera los 1500 iniciales\ncy.get('[data-cy=\"transfer-amount\"]').clear().type('2000');\ncy.get('[data-cy=\"transfer-btn\"]').click();\ncy.contains('Fondos insuficientes').should('be.visible');",
+              "err": {},
+              "uuid": "4aa0cc95-1b2d-45d7-b5a1-b93f7b685875",
+              "parentUUID": "46ac630e-86e7-44f8-9b19-02437eb026dd",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "TC-03: Debería aplicar el bloqueo de seguridad antiblanqueo (+10k)",
+              "fullTitle": "Flujo de Transferencias BBVA (React + FastAPI) TC-03: Debería aplicar el bloqueo de seguridad antiblanqueo (+10k)",
+              "timedOut": null,
+              "duration": 1924,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get('[data-cy=\"balance\"]').should('be.visible');\ncy.get('[data-cy=\"transfer-iban\"]').clear().type('IT02 0500 0012 3456');\n// Transferencia que dispara la regla de Compliance (Lavado de dinero) en el backend Python\ncy.get('[data-cy=\"transfer-amount\"]').clear().type('12000');\ncy.get('[data-cy=\"transfer-btn\"]').click();\ncy.contains('Bloqueo de Seguridad').should('be.visible');",
+              "err": {},
+              "uuid": "e3957d09-feb1-4f2a-a689-d6a30cdedea4",
+              "parentUUID": "46ac630e-86e7-44f8-9b19-02437eb026dd",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "TC-04: Debería rechazar un IBAN de un país no autorizado",
+              "fullTitle": "Flujo de Transferencias BBVA (React + FastAPI) TC-04: Debería rechazar un IBAN de un país no autorizado",
+              "timedOut": null,
+              "duration": 1814,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get('[data-cy=\"balance\"]').should('be.visible');\n// Ponemos un IBAN de España (ES) cuando el sistema espera internacionales FR, DE o IT\ncy.get('[data-cy=\"transfer-iban\"]').clear().type('ES91 2100 0418 4512');\ncy.get('[data-cy=\"transfer-amount\"]').clear().type('100');\ncy.get('[data-cy=\"transfer-btn\"]').click();\ncy.contains('El IBAN debe pertenecer a un país autorizado').should('be.visible');",
+              "err": {},
+              "uuid": "98297383-2b9c-4aa9-af29-984a17cbfea2",
+              "parentUUID": "46ac630e-86e7-44f8-9b19-02437eb026dd",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "5461f72f-b0a1-4c16-97c6-9d7d33f11a73",
+            "4aa0cc95-1b2d-45d7-b5a1-b93f7b685875",
+            "e3957d09-feb1-4f2a-a689-d6a30cdedea4",
+            "98297383-2b9c-4aa9-af29-984a17cbfea2"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 10761,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "8.1.1"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress\\reports\\.jsons",
+        "charts": true,
+        "reportPageTitle": "Reporte QA - Transferencias Internacionales Bank Simulator",
+        "embeddedScreenshots": true,
+        "inlineAssets": true,
+        "saveAllAttempts": false,
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.3.2"
+    }
+  }
+}

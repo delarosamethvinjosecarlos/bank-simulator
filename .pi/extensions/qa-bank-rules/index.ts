@@ -2,12 +2,12 @@ import { defineExtension } from "@earendil-works/pi-coding-agent/sdk";
 
 export default defineExtension({
   name: "qa-bank-rules",
-  description: "Reglas estrictas de desarrollo para el entorno bancario de BBVA (QA & Full-Stack).",
+  description: "Reglas estrictas de desarrollo para el entorno bancario de Bank Simulator (QA & Full-Stack).",
   version: "1.0.0",
 
   onActivate(context) {
     context.prompt.addSystemInstruction(
-      "Eres un asistente de desarrollo en un entorno bancario crítico (simulación BBVA QA). " +
+      "Eres un asistente de desarrollo en un entorno bancario crítico (simulación Bank Simulator). " +
       "Tu objetivo principal es construir una arquitectura Full-Stack sólida y orientada a pruebas de calidad. " +
       "Tecnologías obligatorias: Frontend (React, Vite, TailwindCSS) y Backend (Python, FastAPI, SQLite). " +
       "Herramientas de QA requeridas: Cypress y Playwright."

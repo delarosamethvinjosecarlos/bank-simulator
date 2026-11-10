@@ -12,7 +12,7 @@ from fastapi.security import OAuth2PasswordBearer
 # ==========================================
 # 0. CONFIGURACIÓN DE SEGURIDAD (JWT)
 # ==========================================
-SECRET_KEY = "bbva_mock_secret_key_super_secure"
+SECRET_KEY = "Bank Simulator_mock_secret_key_super_secure"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
@@ -65,7 +65,7 @@ class TransferRequest(BaseModel):
 # ==========================================
 # 3. APLICACIÓN FASTAPI
 # ==========================================
-app = FastAPI(title="BBVA Mock API - Backend Python")
+app = FastAPI(title="Bank Simulator Mock API - Backend Python")
 
 app.add_middleware(
     CORSMiddleware,
@@ -149,11 +149,12 @@ def realizar_transferencia(transfer: TransferRequest, current_user: UserDB = Dep
     if transfer.amount <= 0:
         raise HTTPException(status_code=400, detail="El importe debe ser mayor que cero.")
         
-    if transfer.amount > current_user.balance:
-        raise HTTPException(status_code=400, detail="Fondos insuficientes.")
-        
+    # Regla de Compliance / Antiblanqueo (debe ir antes que la validación de fondos por ley bancaria)
     if transfer.amount > 10000:
         raise HTTPException(status_code=403, detail="Bloqueo de Seguridad: La transferencia supera el límite antiblanqueo.")
+        
+    if transfer.amount > current_user.balance:
+        raise HTTPException(status_code=400, detail="Fondos insuficientes.")
         
     # Restar saldo
     current_user.balance -= transfer.amount
