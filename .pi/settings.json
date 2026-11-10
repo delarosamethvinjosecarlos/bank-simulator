@@ -4,5 +4,8 @@
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-playwright"]
     }
-  }
+  },
+  "extensions": [
+    "./.pi/extensions/qa-bank-rules"
+  ]
 }
